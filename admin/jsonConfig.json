@@ -1,0 +1,123 @@
+{ 
+    "type": "tabs",
+    "i18n": true,
+    "items": { 
+        "mainTab": { 
+            "type": "panel",
+            "label": "main settings",
+            "items": {
+                "hostname": {
+                    "i18n": true,
+                    "type": "text",
+                    "label": "ip or hostname",
+                    "newLine": true
+                },
+                "port": {
+                    "i18n": true,
+                    "type": "number",
+                    "min": 1,
+                    "max": 65535,
+                    "label": "ip port"
+                }
+            }
+        },  
+        "domiqRegexTab": { 
+            "type": "panel",
+            "label": "domiq regex settings",
+            "items": { 
+                "_regexdomiq_explanation": { 
+                    "type": "staticText",
+                    "text": "domiq regex description",
+                    "newLine": true
+                },
+                "domiqregex": { 
+                    "type": "table",
+                    "newLine": true,
+                    "items": [ 
+                        {
+                            "type": "text",
+                            "title": "regular expression list",
+                            "attr": "regex"
+                        },
+                        {
+                            "type": "checkbox",
+                            "label": "read access",
+                            "attr": "read",
+                            "default": true
+                        },
+                        {
+                            "type": "checkbox",
+                            "label": "write access",
+                            "attr": "write",
+                            "default": false
+                        },
+                        { 
+                            "type": "select",
+                            "label": "datatype",
+                            "attr": "datatype",
+                            "default": "string",
+                            "options": [
+                                { "label": "string", "value": "string" },
+                                { "label": "number", "value": "number" },
+                                { "label": "boolean", "value": "boolean" }
+                            ]
+                        }
+                    ]
+                }
+            }
+        },        
+        "foreignStatesTab": { 
+            "type": "panel",
+            "label": "foreign states settings",
+            "items": { 
+                "_foreignstates_explanation": { 
+                    "type": "staticText",
+                    "text": "foreign states description",
+                    "newLine": true
+                },
+                "foreignobjects": { 
+                    "type": "table",
+                    "newLine": true,
+                    "items": [ 
+                        {
+                            "type": "text",
+                            "title": "object search string",
+                            "attr": "searchstring"
+                        }
+                    ]
+                },
+                "_regex_explanation": { 
+                    "type": "staticText",
+                    "text": "regex description",
+                    "newLine": true
+                },
+                "regexentries": { 
+                    "type": "table",
+                    "newLine": true,
+                    "items": [ 
+                        {
+                            "type": "select",
+                            "label": "target variable",
+                            "attr": "targetvariable",
+                            "default": "VAR",
+                            "options": [
+                                { "label": "VAR", "value": "VAR" },
+                                { "label": "MEM", "value": "MEM" }
+                            ]
+                        },
+                        {
+                            "type": "text",
+                            "title": "regular expression",
+                            "attr": "regularexpression"
+                        },
+                        {
+                            "type": "text",
+                            "title": "replace string",
+                            "attr": "replacestring"
+                        }
+                   ]
+                }                
+            }
+        }
+    }
+}

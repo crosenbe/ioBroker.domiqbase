@@ -1,0 +1,151 @@
+{
+  "common": {
+    "name": "domiqbase",
+    "version": "0.1.2",
+    "news": {
+      "0.1.2": {
+        "en": "initial release",
+        "de": "erstausstrahlung",
+        "ru": "начальный выпуск",
+        "pt": "lançamento inicial",
+        "nl": "niet",
+        "fr": "initial release",
+        "it": "rilascio iniziale",
+        "es": "liberación inicial",
+        "pl": "pierwsze wydanie",
+        "uk": "початковий реліз",
+        "zh-cn": "初步释放"
+      }
+    },
+    "titleLang": {
+      "en": "Domiq Base",
+      "de": "Domiq Base",
+      "ru": "База Домик",
+      "pt": "Base Domiq",
+      "nl": "Domiq-basis",
+      "fr": "Base Domiq",
+      "it": "Domiq Base",
+      "es": "Base Domiq",
+      "pl": "Baza Domiqa",
+      "uk": "База Доміка",
+      "zh-cn": "多米克基地"
+    },
+    "desc": {
+      "en": "Domiq Base Communication",
+      "de": "Domiq Base Anbindung",
+      "ru": "Связь базы Domiq",
+      "pt": "Domiq Base Comunicação",
+      "nl": "Domiq Basiscommunicatie",
+      "fr": "Communication de base Domiq",
+      "it": "Comunicazione base Domiq",
+      "es": "Comunicación base Domiq",
+      "pl": "Komunikacja bazowa Domiq",
+      "uk": "Domiq Base Communication",
+      "zh-cn": "Domiq 基地通讯"
+    },
+    "authors": [
+      "Claus Rosenberger <git@rocnet.de>"
+    ],
+    "keywords": [
+      "home automation",
+      "domiq base",
+      "lcn"
+    ],
+    "license": "MIT",
+    "platform": "Javascript/Node.js",
+    "main": "main.js",
+    "icon": "domiqbase.png",
+    "enabled": true,
+    "extIcon": "https://raw.githubusercontent.com/crosenbe/ioBroker.domiqbase/main/admin/domiqbase.png",
+    "readme": "https://github.com/crosenbe/ioBroker.domiqbase/blob/main/README.md",
+    "loglevel": "info",
+    "mode": "daemon",
+    "type": "protocols",
+    "compact": true,
+    "connectionType": "local",
+    "dataSource": "push",
+    "adminUI": {
+      "config": "json"
+    },
+    "dependencies": [
+      {
+        "js-controller": ">=3.3.22"
+      }
+    ],
+    "globalDependencies": [
+      {
+        "admin": ">=5.1.13"
+      }
+    ]
+  },
+  "native": {
+    "hostname": "",
+    "port": 4224,
+    "domiqregex": [
+      {
+        "regex": "^LCN\\.relay\\..*$",
+        "read": true,
+        "write": true,
+        "datatype": "boolean"
+      },
+      {
+        "regex": "^LCN\\.threshold\\..*$",
+        "read": true,
+        "write": true,
+        "datatype": "number"
+      },
+      {
+        "regex": "^LCN\\.output\\..*$",
+        "read": true,
+        "write": true,
+        "datatype": "number"
+      },
+      {
+        "regex": "^LCN\\.regulator\\..*$",
+        "read": true,
+        "write": true,
+        "datatype": "number"
+      },
+      {
+        "regex": "^LCN\\.value\\..*$",
+        "read": true,
+        "write": false,
+        "datatype": "number"
+      },
+      {
+        "regex": "^LCN\\.variable\\..*$",
+        "read": true,
+        "write": false,
+        "datatype": "number"
+      },
+      {
+        "regex": "^LCN\\.sensor\\..*$",
+        "read": true,
+        "write": false,
+        "datatype": "number"
+      },
+      {
+        "regex": "^SUN\\..*$",
+        "read": true,
+        "write": false,
+        "datatype": "number"
+      },
+      {
+        "regex": "^CLOCK\\..*$",
+        "read": true,
+        "write": false,
+        "datatype": "string"
+      },
+      {
+        "regex": "^MODBUS\\..*$",
+        "read": true,
+        "write": false,
+        "datatype": "number"
+      }
+    ],
+    "foreignobjects": [],
+    "regexentries": []
+  },
+  "objects": [],
+  "instanceObjects": []
+}
