@@ -46,10 +46,8 @@ In this configuration table it can be decided to store the value in MEM or VAR v
 
 
 ## Changelog
-<!--
-    Placeholder for the next version (at the beginning of the line):
-    ### **WORK IN PROGRESS**
--->
+
+### **WORK IN PROGRESS**
 ### 0.1.2 (2023-01-20)
 * (Claus Rosenberger) initial release
 
