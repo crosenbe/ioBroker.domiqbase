@@ -51,7 +51,7 @@ In this configuration table it can be decided to store the value in MEM or VAR v
     ## **WORK IN PROGRESS**
 -->
 
-## **WORK IN PROGRESS**
+### **WORK IN PROGRESS**
 -   Smaller bugfixes
 -   Code cleanup to pass all tests
 
