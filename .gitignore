@@ -9,6 +9,7 @@
 !.create-adapter.json
 !.releaseconfig.json
 !.commitmessage
+!.eslintrc.js
 
 *.code-workspace
 node_modules
