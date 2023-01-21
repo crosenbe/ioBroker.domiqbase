@@ -266,13 +266,11 @@ class Domiqbase extends utils.Adapter {
             this.log.error('error getObject: ' + JSON.stringify(err))
           } else if (obj) {
             if (state.ack === false) {
-              this.log.info('A: ' + state.ack + '  ' + JSON.stringify(obj))
               if (obj.common.type === 'boolean') {
                 newValue = { false: '0', true: '1' }[state.val]
               } else {
                 newValue = state.val
               }
-              this.log.info('B: ' + id.split('.').filter((el, idx) => idx > 1).join('.') + '  ' + newValue)
               this.domiqClient.write(id.split('.').filter((el, idx) => idx > 1).join('.'), newValue)
             }
           }
