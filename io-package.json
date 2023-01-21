@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "domiqbase",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "news": {
+      "1.0.1": {
+        "en": "Smaller bugfixes\nCode cleanup to pass all tests",
+        "de": "Kleinere Bugfixes\nCode-Reinigung für alle Tests",
+        "ru": "Меньше исправлений\nОчистка кода для прохождения всех тестов",
+        "pt": "Bugfixs menores\nLimpeza de código para passar todos os testes",
+        "nl": "Kleinere insectenfixen\nCode schoonmaak om alle testen te doorstaan",
+        "fr": "Petits bugfix\nNettoyage de code pour passer tous les tests",
+        "it": "Piccoli bugfix\nPulizia del codice per superare tutti i test",
+        "es": "Infixes más pequeños\nLimpieza del código para pasar todas las pruebas",
+        "pl": "Małe trąbki\nCzyszczenie kodu",
+        "uk": "Помилки\nЧистка коду для проходження всіх випробувань",
+        "zh-cn": "小型配件\n所有试验的清洁守则"
+      },
       "1.0.0": {
         "en": "release changes",
         "de": "änderungen der freigabe",
