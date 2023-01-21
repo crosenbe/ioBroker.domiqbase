@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "domiqbase",
-    "version": "0.1.2",
+    "version": "1.0.0",
     "news": {
+      "1.0.0": {
+        "en": "release changes",
+        "de": "änderungen der freigabe",
+        "ru": "релиз изменений",
+        "pt": "alterações de lançamento",
+        "nl": "vertaling:",
+        "fr": "modifications apportées",
+        "it": "modifiche di rilascio",
+        "es": "cambios de liberación",
+        "pl": "zmiana",
+        "uk": "зміни релізу",
+        "zh-cn": "释放"
+      },
       "0.1.2": {
         "en": "initial release",
         "de": "erstausstrahlung",
