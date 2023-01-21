@@ -46,7 +46,7 @@ class Domiqbase extends utils.Adapter {
     const domiqWhitelist = []
     let initialState
     const self = this
-    //this.me = 'system.adapter.' + this.name + '.' + this.instance
+    // this.me = 'system.adapter.' + this.name + '.' + this.instance
     this.me = this.name + '.' + this.instance
 
     // The adapters config (in the instance object everything under the attribute "native") is accessible via
@@ -111,12 +111,12 @@ class Domiqbase extends utils.Adapter {
     this.domiqClient.on('event', async (address, value) => {
       if (!initialState) {
         initialState = true
-        this.domiqClient.writeRaw('?');
+        this.domiqClient.writeRaw('?')
       }
 
       // create objects for elements on the whitelist
       domiqWhitelist.forEach(async function (item, _) {
-        let newValue;
+        let newValue
         const result = item.regex.exec(address)
         if (Array.isArray(result) && result.length) {
           await self.setObjectNotExistsAsync(address, {
@@ -135,12 +135,11 @@ class Domiqbase extends utils.Adapter {
             newValue = parseFloat(Number(value).toFixed(11))
           } else if (item.datatype === 'boolean') {
             newValue = { 0: false, 1: true }[value]
-          } else  {  // string
-            newValue = value 
-          }                              
+          } else { // string
+            newValue = value
+          }
           await self.setStateAsync(address, { val: newValue, ack: true })
           self.subscribeStates(address)
-          
         }
       })
 
@@ -230,7 +229,7 @@ class Domiqbase extends utils.Adapter {
     if (state) {
       // The state was changed*/
       let newValue
-      let idLocation = id.split('.').filter((el, idx) => idx < 2).join('.')
+      const idLocation = id.split('.').filter((el, idx) => idx < 2).join('.')
 
       if (idLocation !== this.me) {
         this.getForeignObject(id, (err, obj) => {
@@ -262,14 +261,22 @@ class Domiqbase extends utils.Adapter {
         })
       } else {
         // handle state updates sent from ioBroker to the  Base
-        if (state.ack === false) {
-          if (obj.common.type == 'boolean') {
-            newValue = { false: '0', true: '1' }[state.val]
-          } else {
-            newValue = state.val
+        this.getObject(id, (err, obj) => {
+          if (err) {
+            this.log.error('error getObject: ' + JSON.stringify(err))
+          } else if (obj) {
+            if (state.ack === false) {
+              this.log.info('A: ' + state.ack + '  ' + JSON.stringify(obj))
+              if (obj.common.type === 'boolean') {
+                newValue = { false: '0', true: '1' }[state.val]
+              } else {
+                newValue = state.val
+              }
+              this.log.info('B: ' + id.split('.').filter((el, idx) => idx > 1).join('.') + '  ' + newValue)
+              this.domiqClient.write(id.split('.').filter((el, idx) => idx > 1).join('.'), newValue)
+            }
           }
-          this.domiqClient.write(id.split('.').filter((el, idx) => idx > 1).join('.'), newValue)
-        }
+        })
       }
     } else {
       // The state was deleted
