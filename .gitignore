@@ -8,6 +8,7 @@
 !.gitignore
 !.create-adapter.json
 !.releaseconfig.json
+!.commitmessage
 
 *.code-workspace
 node_modules
