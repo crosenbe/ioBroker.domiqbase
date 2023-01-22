@@ -50,6 +50,10 @@ In this configuration table it can be decided to store the value in MEM or VAR v
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+
+### **WORK IN PROGRESS**
+- only progress state on real value change
+
 ### 1.0.2 (2023-01-22)
 - push all subscribed objects to the base after connection lost and reconnect
 - After connect and reconnect initialize all states but don't progress updates of state mappings the first 10 seconds to not override values of the foreign states

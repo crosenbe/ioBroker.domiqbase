@@ -232,56 +232,58 @@ class Domiqbase extends utils.Adapter {
 
   onStateChange (id, state) {
     if (state) {
-      // The state was changed*/
-      let newValue
-      const idLocation = id.split('.').filter((el, idx) => idx < 2).join('.')
-
-      if (idLocation !== this.me) {
-        // this progress an state update from a foreign state
-        this.getForeignObject(id, (err, obj) => {
-          if (err) {
-            this.log.error('error getForeignObject: ' + JSON.stringify(err))
-          } else if (obj) {
-            // send state changes back to the Base (if the source of the state is a foreign adapter)
-            let result = this.stateMapping.find(e => e.origin === id)
-            if (!result) {
-              this.foreignStates.forEach((item, _) => {
-                if (id.match(item.search)) {
-                  result = { origin: id, target: id.replace(item.search, item.replace) }
-                  this.stateMapping.push(result)
-                  this.log.info('created new state mapping: ' + result.origin + ' > ' + result.target)
+      if (state.ts === state.lc) {
+        // The state was changed
+        let newValue
+        const idLocation = id.split('.').filter((el, idx) => idx < 2).join('.')
+  
+        if (idLocation !== this.me) {
+          // this progress an state update from a foreign state
+          this.getForeignObject(id, (err, obj) => {
+            if (err) {
+              this.log.error('error getForeignObject: ' + JSON.stringify(err))
+            } else if (obj) {
+              // send state changes back to the Base (if the source of the state is a foreign adapter)
+              let result = this.stateMapping.find(e => e.origin === id)
+              if (!result) {
+                this.foreignStates.forEach((item, _) => {
+                  if (id.match(item.search)) {
+                    result = { origin: id, target: id.replace(item.search, item.replace) }
+                    this.stateMapping.push(result)
+                    this.log.info('created new state mapping: ' + result.origin + ' > ' + result.target)
+                  }
+                })
+              }
+              // var result = this.foreignStates.find(e => e.origin === id);
+              if (result) {
+                if (obj.common.type === 'boolean') {
+                  newValue = { false: '0', true: '1' }[state.val]
+                } else {
+                  newValue = state.val
                 }
-              })
-            }
-            // var result = this.foreignStates.find(e => e.origin === id);
-            if (result) {
-              if (obj.common.type === 'boolean') {
-                newValue = { false: '0', true: '1' }[state.val]
-              } else {
-                newValue = state.val
+                // this.log.info(result.origin + ' > ' + result.target + ' = ' + newValue );
+                this.domiqClient.write(result.target, newValue)
               }
-              // this.log.info(result.origin + ' > ' + result.target + ' = ' + newValue );
-              this.domiqClient.write(result.target, newValue)
             }
-          }
-        })
-      } else {
-        // this progress an state update to a domiqbase state
-        this.getObject(id, (err, obj) => {
-          if (err) {
-            this.log.error('error getObject: ' + JSON.stringify(err))
-          } else if (obj) {
-            if (state.ack === false) {
-              if (obj.common.type === 'boolean') {
-                newValue = { false: '0', true: '1' }[state.val]
-              } else {
-                newValue = state.val
+          })
+        } else {
+          // this progress an state update to a domiqbase state
+          this.getObject(id, (err, obj) => {
+            if (err) {
+              this.log.error('error getObject: ' + JSON.stringify(err))
+            } else if (obj) {
+              if (state.ack === false) {
+                if (obj.common.type === 'boolean') {
+                  newValue = { false: '0', true: '1' }[state.val]
+                } else {
+                  newValue = state.val
+                }
+                this.domiqClient.write(id.split('.').filter((el, idx) => idx > 1).join('.'), newValue)
+                this.setStateAsync(id, { val: state.val, ack: true })
               }
-              this.domiqClient.write(id.split('.').filter((el, idx) => idx > 1).join('.'), newValue)
-              this.setStateAsync(id, { val: state.val, ack: true })
             }
-          }
-        })
+          })
+        }
       }
     } else {
       // The state was deleted
