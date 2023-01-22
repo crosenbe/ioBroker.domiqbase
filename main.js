@@ -34,7 +34,7 @@ class Domiqbase extends utils.Adapter {
     this.stateMapping = []
     this.domiqClient = undefined
     this.me = undefined
-    this.initialState = undefined
+    this.initialState = true
     this.initialStateAsked = undefined
   }
 
@@ -114,7 +114,27 @@ class Domiqbase extends utils.Adapter {
         setTimeout(() => {
           this.initialState = false
         }, 10000)
+        // request all items from the Base
         this.domiqClient.writeRaw('?')
+        // start initial sync of foreign states to the Base
+        if (Array.isArray(this.config.foreignobjects) && this.config.foreignobjects.length) {
+          this.config.foreignobjects.forEach((item, index) => {
+            if ('searchstring' in item) {
+              this.log.info('config  foreign object[' + index + ']: ' + item.searchstring)
+              this.subscribeForeignStates(item.searchstring)
+              // initial populate Domiq Base
+              this.getForeignStates(item.searchstring, (err, states) => {
+                if (err) {
+                  this.log.error('error getForeignStates: ' + JSON.stringify(err))
+                } else {
+                  Object.keys(states).forEach((item, _) => {
+                    this.onStateChange(item, states[item])
+                  })
+                }
+              })
+            }
+          })
+        }
         this.initialStateAsked = true
       }
 
@@ -187,6 +207,7 @@ class Domiqbase extends utils.Adapter {
 
     // read foreign objects table and subscribe foreign states
     // populate variables in the Base at start time
+    /*
     if (Array.isArray(this.config.foreignobjects) && this.config.foreignobjects.length) {
       this.config.foreignobjects.forEach((item, index) => {
         if ('searchstring' in item) {
@@ -204,7 +225,8 @@ class Domiqbase extends utils.Adapter {
           })
         }
       })
-    };
+    }
+    */
   }
 
   /**
