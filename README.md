@@ -53,6 +53,7 @@ In this configuration table it can be decided to store the value in MEM or VAR v
 
 ### **WORK IN PROGRESS**
 - only progress state on real value change
+- fix initial population of variables in Base from foreign objects
 
 ### 1.0.2 (2023-01-22)
 - push all subscribed objects to the base after connection lost and reconnect
