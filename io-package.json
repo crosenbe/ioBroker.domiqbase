@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "domiqbase",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "news": {
+      "1.0.3": {
+        "en": "only progress state on real value change\nfix initial population of variables in Base from foreign objects",
+        "de": "nur fortschrittszustand bei realer wertänderung\ndie anfängliche Population von Variablen in Basis von fremden Objekten beheben",
+        "ru": "только прогресс состояние на реальных изменениях\nисправить начальное население переменных в Базе из иностранных объектов",
+        "pt": "apenas estado de progresso na mudança de valor real\ncorrigir a população inicial de variáveis em Base de objetos estrangeiros",
+        "nl": "alleen vooruitgang op echte waarde\nvertaling:",
+        "fr": "seulement l'état de progrès sur le changement de valeur réelle\nfixer la population initiale des variables à la base des objets étrangers",
+        "it": "solo stato di progresso sul cambiamento di valore reale\nfissare la popolazione iniziale di variabili in Base da oggetti stranieri",
+        "es": "sólo progreso estado en cambio de valor real\nfijar la población inicial de variables en Base de objetos extranjeros",
+        "pl": "zmiana wartości rzeczywistej\nodkrycie liczby zmiennych w Bazie od obiektów zagranicznych",
+        "uk": "тільки стан прогресу на зміні реального значення\nфіксувати початкове населення змінної бази з іноземних об'єктів",
+        "zh-cn": "只有实际价值变化取得进展的国家\nfix 从外国物体计算出来的变量初步人口"
+      },
       "1.0.2": {
         "en": "push all subscribed objects to the base after connection lost and reconnect\nAfter connect and reconnect initialize all states but don't progress updates of state mappings the first 10 seconds to not override values of the foreign states\ntemporary ignore Base response commands for 1sec after update to the same address was written to the Base (workaround because the Base send 2 responses at the moment)\nacknowledge state updates",
         "de": "schieben sie alle abonnierten objekte auf die basis nach der verbindung verloren und wieder verbinden\nNach dem Verbinden und Wiederverbinden initialisieren Sie alle Zustände, aber nicht Fortschritt Aktualisierungen von Zustand Mappings die ersten 10 Sekunden, um nicht überschreiben Werte der ausländischen Staaten\nvorübergehend ignorieren Basis-Antwortbefehle für 1sec nach Update auf die gleiche Adresse wurde an die Basis geschrieben (Workaround, weil die Basis 2 Antworten im Moment senden)\nstatusaktualisierung",

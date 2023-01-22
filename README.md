@@ -50,8 +50,7 @@ In this configuration table it can be decided to store the value in MEM or VAR v
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
-
-### **WORK IN PROGRESS**
+### 1.0.3 (2023-01-22)
 - only progress state on real value change
 - fix initial population of variables in Base from foreign objects
 
