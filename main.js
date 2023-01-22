@@ -87,7 +87,7 @@ class Domiqbase extends utils.Adapter {
     this.subscribeStates(this.name + '.' + this.instance + '.*')
 
     // connect to domiq base, 1000ms ignore responses
-    this.domiqClient = new DomiqClient({ host: hostname, port: port, responseTime: 1000 })
+    this.domiqClient = new DomiqClient({ host: hostname, port, responseTime: 1000 })
     this.domiqClient.connect()
 
     this.domiqClient.on('connect', function () {
@@ -111,7 +111,7 @@ class Domiqbase extends utils.Adapter {
 
     this.domiqClient.on('event', async (address, value) => {
       if (initialState && !initialStateAsked) {
-        setTimeout( () => {
+        setTimeout(() => {
           initialState = false
         }, 10000)
         this.domiqClient.writeRaw('?')
