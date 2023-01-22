@@ -45,6 +45,7 @@ class Domiqbase extends utils.Adapter {
     const port = this.config.port
     const domiqWhitelist = []
     let initialState
+    let initialStateAsked
     const self = this
     // this.me = 'system.adapter.' + this.name + '.' + this.instance
     this.me = this.name + '.' + this.instance
@@ -85,14 +86,14 @@ class Domiqbase extends utils.Adapter {
     // subscribe states
     this.subscribeStates(this.name + '.' + this.instance + '.*')
 
-    // connect to domiq base
-    initialState = true
-    this.domiqClient = new DomiqClient({ host: hostname, port })
+    // connect to domiq base, 1000ms ignore responses
+    this.domiqClient = new DomiqClient({ host: hostname, port: port, responseTime: 1000 })
     this.domiqClient.connect()
 
     this.domiqClient.on('connect', function () {
       self.log.info('Domiq connected')
-      initialState = false
+      initialState = true
+      initialStateAsked = false
     })
 
     this.domiqClient.on('close', function () {
@@ -109,9 +110,12 @@ class Domiqbase extends utils.Adapter {
     })
 
     this.domiqClient.on('event', async (address, value) => {
-      if (!initialState) {
-        initialState = true
+      if (initialState && !initialStateAsked) {
+        setTimeout( () => {
+          initialState = false
+        }, 10000)
         this.domiqClient.writeRaw('?')
+        initialStateAsked = true
       }
 
       // create objects for elements on the whitelist
@@ -145,7 +149,8 @@ class Domiqbase extends utils.Adapter {
 
       // write state changes from Base to the origin
       const result = this.stateMapping.find(e => e.target === address)
-      if (result) {
+      if (result && !initialState) {
+        // only proceed if a state mapping is available and 10sec after initialize the connection
         this.getForeignObject(result.origin, (errobj, obj) => {
           if (errobj) {
             this.log.error('error getForeignObject: ' + JSON.stringify(errobj))
@@ -181,10 +186,10 @@ class Domiqbase extends utils.Adapter {
     })
 
     // read foreign objects table and subscribe foreign states
+    // populate variables in the Base at start time
     if (Array.isArray(this.config.foreignobjects) && this.config.foreignobjects.length) {
       this.config.foreignobjects.forEach((item, index) => {
         if ('searchstring' in item) {
-          // TODO - check if origin does exist or check it in the admin panel, or both
           this.log.info('config  foreign object[' + index + ']: ' + item.searchstring)
           this.subscribeForeignStates(item.searchstring)
           // initial populate Domiq Base
@@ -232,6 +237,7 @@ class Domiqbase extends utils.Adapter {
       const idLocation = id.split('.').filter((el, idx) => idx < 2).join('.')
 
       if (idLocation !== this.me) {
+        // this progress an state update from a foreign state
         this.getForeignObject(id, (err, obj) => {
           if (err) {
             this.log.error('error getForeignObject: ' + JSON.stringify(err))
@@ -260,7 +266,7 @@ class Domiqbase extends utils.Adapter {
           }
         })
       } else {
-        // handle state updates sent from ioBroker to the  Base
+        // this progress an state update to a domiqbase state
         this.getObject(id, (err, obj) => {
           if (err) {
             this.log.error('error getObject: ' + JSON.stringify(err))
@@ -272,6 +278,7 @@ class Domiqbase extends utils.Adapter {
                 newValue = state.val
               }
               this.domiqClient.write(id.split('.').filter((el, idx) => idx > 1).join('.'), newValue)
+              this.setStateAsync(id, { val: state.val, ack: true })
             }
           }
         })
