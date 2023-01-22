@@ -34,6 +34,8 @@ class Domiqbase extends utils.Adapter {
     this.stateMapping = []
     this.domiqClient = undefined
     this.me = undefined
+    this.initialState = undefined
+    this.initialStateAsked = undefined
   }
 
   /*
@@ -44,8 +46,6 @@ class Domiqbase extends utils.Adapter {
     const hostname = this.config.hostname
     const port = this.config.port
     const domiqWhitelist = []
-    let initialState
-    let initialStateAsked
     const self = this
     // this.me = 'system.adapter.' + this.name + '.' + this.instance
     this.me = this.name + '.' + this.instance
@@ -92,8 +92,8 @@ class Domiqbase extends utils.Adapter {
 
     this.domiqClient.on('connect', function () {
       self.log.info('Domiq connected')
-      initialState = true
-      initialStateAsked = false
+      this.initialState = true
+      this.initialStateAsked = false
     })
 
     this.domiqClient.on('close', function () {
@@ -110,12 +110,12 @@ class Domiqbase extends utils.Adapter {
     })
 
     this.domiqClient.on('event', async (address, value) => {
-      if (initialState && !initialStateAsked) {
+      if (this.initialState && !this.initialStateAsked) {
         setTimeout(() => {
-          initialState = false
+          this.initialState = false
         }, 10000)
         this.domiqClient.writeRaw('?')
-        initialStateAsked = true
+        this.initialStateAsked = true
       }
 
       // create objects for elements on the whitelist
@@ -149,7 +149,7 @@ class Domiqbase extends utils.Adapter {
 
       // write state changes from Base to the origin
       const result = this.stateMapping.find(e => e.target === address)
-      if (result && !initialState) {
+      if (result && !this.initialState) {
         // only proceed if a state mapping is available and 10sec after initialize the connection
         this.getForeignObject(result.origin, (errobj, obj) => {
           if (errobj) {
@@ -232,11 +232,11 @@ class Domiqbase extends utils.Adapter {
 
   onStateChange (id, state) {
     if (state) {
-      if (state.ts === state.lc) {
-        // The state was changed
+      if (state.ts === state.lc || this.initialState) {
+        // The state was changed or connection initialzed
         let newValue
         const idLocation = id.split('.').filter((el, idx) => idx < 2).join('.')
-  
+
         if (idLocation !== this.me) {
           // this progress an state update from a foreign state
           this.getForeignObject(id, (err, obj) => {
